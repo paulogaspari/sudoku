@@ -2,18 +2,17 @@ require_relative 'cell'
 
 class Grid
 
+
 	attr_accessor :cells, :sudoku, :puzzle
 
 	def initialize(puzzle)
-		@puzzle= puzzle 
-		@cells = []
-		puzzle_to_cells
+		@cells = puzzle_to_cells(puzzle)
 	end
 
 
-	def puzzle_to_cells
-		@sudoku = @puzzle.each_char.to_a.map {|cell| cell.to_i} 
-		@cells = @sudoku.map {|value| Cell.new(value)}
+	def puzzle_to_cells(puzzle)
+		@sudoku = puzzle.each_char.to_a.map {|cell| cell.to_i}
+		@sudoku.map {|value| Cell.new(value)}
 	end
 
 
@@ -32,92 +31,87 @@ class Grid
 
 
 	def figure_out_cell_value(index)
-
 		neighbours_arrays(index)
-		puts "LINE: #{@line_elements.inspect}"
-		puts "BOX: #{@box_elements.inspect}"
-		puts "COLUMN: #{@column_elements.inspect}"
-		puts "#{index}"
 		number_to_cell(index)
 	end
 
 
 	def neighbours_arrays(index)
-		@column_elements = []
-		@box_elements = []
 
-		# Element position:
-		row_index = index/9
-		column_index = index%9
-
-		# Getting neighbours indexes into an array of values
-		
-
-		@line_elements = cell_values(neighbours_indexes_in_line(index))
-
-		neighbours_indexes_in_column(index).each{|i| @column_elements << @cells[i].value}		
-		neighbours_indexes_in_box(index).each{|i| @box_elements << @cells[i].value}
+		@line_elements = neighbours_indexes_in_line(index).map{|i| @cells[i].value}
 	end
 
-	def row_and_column
-	end
-
-	def cell_values(index_array)
-		index_array.map{|i| @cells[i].value}
-	end
-
-	def neighbour_values_in_line(index)
-		cell_values(neighbour_index_in_line(index))
-	end
-
-	def neighbour_values_in_column(index)
-	end
 
 
 	def number_to_cell(index)
-		missing_number = Array(0..9) - @line_elements - @column_elements - @box_elements
+		missing_number = Array(0..9) - @line_elements - @column - @box
 		# print missing_number
 		(@cells[index].value = missing_number.first) if missing_number.count == 1
 	end
 
+################################################################
+#                    CALCULATING NEIGHBOURS                    #
+################################################################
 
-	def neighbours_indexes_in_line(index)
+
+	def line_neighbours(index)
 		row_index = index/9
 		start = row_index * 9
 		end_index = start+9
-		(start...end_index).to_a
+		(start...end_index).to_a ..map{|i| @cells[i].value}
 	end	
 
 
-	def neighbours_indexes_in_column(index)
+
+	def column_neighbours(index)
 		c = index%9
-		[c,c+9,c+18,c+27,c+36,c+45,c+54,c+63,c+72]
+		@column = []
+		[c,c+9,c+18,c+27,c+36,c+45,c+54,c+63,c+72].each{|i| @column << @cells[i].value}
+		return @column
 	end
 
-
-	def neighbours_in_box(box_array)
-		box_neighbours_values = []
-		box_array.each {|cells| neighbours_in_box << cells.value}
-		return box_neighbours_values
-	end
 	
-
-	def neighbours_indexes_in_box (index)
+	def box_neighbours (index)
 		@box = []
 		box2 = @cells.each_slice(9).to_a.each_slice(3).to_a
-		box2 = @box.each{|rows| box2 << rows.transpose}
-		@box = box2.flatten
-		@box = box2.each_slice(9).to_a
+		box2 = box2.each{|rows| @box << rows.transpose}
+		@box = @box.flatten
+		@box = @box.each_slice(9).to_a
 		box_number = index/9
 		box_number = box_number.to_i
-		@box = box[box_number]
-		return neighbours_in_box(@box)
+		@box = @box[box_number]
+		# return neighbours_in_box(@box)
+		return @box
 	end		
+
+
+
+################################################################
+
 
 
 	def solved?
 		@cells.count == 81 && @cells.index(0) == 0
 	end
+
+	def sudoku_board
+		sudoku_b = @cells.map {|value| cell.value}
+	end
+
+
+
+
+
+
+
+
+
+
+################################################################
+#                       PRINTING SUDOKUs                       #
+################################################################
+
+
 
 
 	def print_puzzle(array)
@@ -128,6 +122,7 @@ class Grid
 			puts '|' + "\n ---+---+---+---+---+---+---+---+---"
 		end
 	end
+
 
 	def object_values_to_array
 		@sollution_array = []
