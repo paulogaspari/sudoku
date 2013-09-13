@@ -17,48 +17,45 @@ class Grid
 
 
 	def solve
-		# while !solved? do
-		# 	execute_solving
-		# end
-	end
-
-
-	def execute_solving
-		@cells.each_with_index do |element, index|
-			figure_out_cell_value(index) if element.value == 0 
+		while !solved? do
+			@cells.each_with_index do |element, index|
+				figure_out_cell_value(index) if element.value == 0 
+			end
 		end
 	end
 
 
 	def figure_out_cell_value(index)
-		neighbours_arrays(index)
+		line_neighbours
+		column_neighbours
+		box_neighbours
 		number_to_cell(index)
-	end
-
-
-	def neighbours_arrays(index)
-
-		@line_elements = neighbours_indexes_in_line(index).map{|i| @cells[i].value}
 	end
 
 
 
 	def number_to_cell(index)
-		missing_number = Array(0..9) - @line_elements - @column - @box
-		# print missing_number
+		missing_number = Array(0..9) - @line - @column - @box
 		(@cells[index].value = missing_number.first) if missing_number.count == 1
 	end
+
+
+	def solved?
+		@cells.count == 81 && @cells.index(0) == 0
+	end
+
 
 ################################################################
 #                    CALCULATING NEIGHBOURS                    #
 ################################################################
 
 
+
 	def line_neighbours(index)
 		row_index = index/9
 		start = row_index * 9
 		end_index = start+9
-		(start...end_index).to_a ..map{|i| @cells[i].value}
+		@line = (start...end_index).to_a.map{|i| @cells[i].value}
 	end	
 
 
@@ -81,28 +78,8 @@ class Grid
 		box_number = box_number.to_i
 		@box = @box[box_number]
 		# return neighbours_in_box(@box)
-		return @box
+		return @box.map{|instances| instances.value}
 	end		
-
-
-
-################################################################
-
-
-
-	def solved?
-		@cells.count == 81 && @cells.index(0) == 0
-	end
-
-	def sudoku_board
-		sudoku_b = @cells.map {|value| cell.value}
-	end
-
-
-
-
-
-
 
 
 
@@ -111,8 +88,17 @@ class Grid
 #                       PRINTING SUDOKUs                       #
 ################################################################
 
+	def program_solution
+		@cells.map {|cells| cells.value}
+	end
 
+	def sudoku_board
+		sudoku_b = @cells.map {|value| cell.value}
+	end
 
+	def cheat_sollution
+		'615493872348127956279568431496832517521746389783915264952681743864379125137254698'.each_char.to_a.map {|cell| cell.to_i}
+	end
 
 	def print_puzzle(array)
 		sudoku_divided = array.each_slice(9).to_a
@@ -124,20 +110,15 @@ class Grid
 	end
 
 
-	def object_values_to_array
-		@sollution_array = []
-		# puts "CELLS ARRAY:  " +  @cells.inspect
-		@cells.each do |cell|
-			@sollution_array << cell.value
-
-		end
-		puts "SOLUTION ARRAY:  " + @sollution_array.inspect
-		return @sollution_array
+	# def object_values_to_array
+	# 	@sollution_array = []
+	# 	@cells.each do |cell|
+	# 		@sollution_array << cell.value
+	# 	end
+	# 	return @sollution_array
 	end
 
-	def cheat_sollution
-		'615493872348127956279568431496832517521746389783915264952681743864379125137254698'.each_char.to_a.map {|cell| cell.to_i}
-	end
+	
 
 
 end

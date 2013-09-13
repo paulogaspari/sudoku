@@ -52,10 +52,8 @@ describe Grid do
 
 
 
-
-
 	  	it 'should get line_neighbours' do
-	  		expect(grid.line_neighbours(40)).to eq [36, 37, 38, 39, 40, 41, 42, 43, 44] 
+	  		expect(grid.line_neighbours(40)).to eq [5, 0, 1, 0, 4, 0, 3, 8, 0] 
 	  	end
 
 	  	it 'should get column_neighbours' do
@@ -68,59 +66,19 @@ describe Grid do
 
 
 
-
+	  	it 'puts the result of the program onto the screen' do
+	  		expect(grid.print_puzzle(program_solution)).to be_true
+	  	end
 
 	  	it 'puts the solution onto the screen' do
 	  		expect(grid.print_puzzle(grid.cheat_sollution)).to be_true
 	  	end
 	 	
-	 	# expect(subject).to receive(:some_method).with do |arg|
-	 	# arg == 1
-  		# end
 
-  		# subject.some_method(1)
-		# end
 	end
 
 
 
 
-
-
-
-
-
-  context ":::::::::::::::::::solving sudoku::::::::::::::::::" do
-
-
-
-  	it 'test neighbours array' do
-
-  	end
-
-
-
-  	xit'should print puzzle sollution' do
-  		grid.solve
-  		expect(grid.print_puzzle(grid.object_values_to_array)).to be_true
-  	end
-
-
-
-    
-    xit "can solve the puzzle" do
-      expect(grid.solved?).to be_false
-      grid.solve
-      expect(grid.solved?).to be_true
-      expect(grid.to_s).to eq('615493872348127956279568431496832517521746389783915264952681743864379125137254698')
-    end
-  
-  end
-
 end
-
-
-
-# real array:
-# [0, 1, 5, 0, 0, 3, 0, 0, 2, 0, 0, 0, 1, 0, 0, 9, 0, 6, 2, 7, 0, 0, 6, 8, 4, 3, 0, 4, 9, 0, 0, 0, 2, 0, 1, 7, 5, 0, 1, 0, 4, 0, 3, 8, 0, 0, 0, 3, 9, 0, 5, 0, 0, 0, 9, 0, 0, 0, 8, 1, 0, 4, 0, 8, 6, 0, 0, 7, 0, 0, 2, 5, 0, 3, 7, 2, 0, 4, 6, 0, 0] 
 
