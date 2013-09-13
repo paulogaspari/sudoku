@@ -48,15 +48,15 @@ class Grid
 
 		# Element position:
 		row_index = index/9
-		column_index = index - (9*row_index.to_i)
+		column_index = index%9
 
 		# Getting neighbours indexes into an array of values
 		
 
-		@line_elements = cell_values(neighbours_in_line(index, column_index))
+		@line_elements = cell_values(neighbours_indexes_in_line(index))
 
-		neighbours_in_column(column_index).each{|i| @column_elements << @cells[i].value}		
-		neighbours_in_box(column_index, row_index).each{|i| @box_elements << @cells[i].value}
+		neighbours_indexes_in_column(index).each{|i| @column_elements << @cells[i].value}		
+		neighbours_indexes_in_box(index).each{|i| @box_elements << @cells[i].value}
 	end
 
 	def row_and_column
@@ -67,10 +67,12 @@ class Grid
 	end
 
 	def neighbour_values_in_line(index)
-		row_index = index/9
-		column_index = index - (9*row_index.to_i)
-		cell_values(neighbours_in_line(index, column_index))
+		cell_values(neighbour_index_in_line(index))
 	end
+
+	def neighbour_values_in_column(index)
+	end
+
 
 	def number_to_cell(index)
 		missing_number = Array(0..9) - @line_elements - @column_elements - @box_elements
@@ -79,41 +81,37 @@ class Grid
 	end
 
 
-	def neighbours_in_line(row_index,index)
+	def neighbours_indexes_in_line(index)
+		row_index = index/9
 		start = row_index * 9
 		end_index = start+9
-		(start..end_index).to_a
+		(start...end_index).to_a
 	end	
 
 
-	# def old_neighbours_in_line(i, p)
-	# 	puts [i-p,i+(1-p),i+(2-p),i+(3-p),i+(4-p),i+(5-p),i+(6-p),i+(7-p),i+(8-p)]
-
-	# end	
-
-	def neighbours_in_column(c)
+	def neighbours_indexes_in_column(index)
+		c = index%9
 		[c,c+9,c+18,c+27,c+36,c+45,c+54,c+63,c+72]
 	end
 
-	def neighbours_in_box (r,c)
-		i = determine_box_index(r,c)
-		raise "i:#{i},r:#{r},c:#{c}" if i.nil?
-		[0+(3*i),1+(3*i),2+(3*i),9+(3*i),10+(3*i),11+(3*i),18+(3*i),19+(3*i),20+(3*i)]
+
+	def neighbours_in_box(box_array)
+		box_neighbours_values = []
+		box_array.each {|cells| neighbours_in_box << cells.value}
+		return box_neighbours_values
 	end
+	
 
-	def determine_box_index(r,c)
-		boxes = [[0,0],[0,1],[0,2],[1,0],[1,1],[1,2],[2,0],[2,1],[2,2]]
-		box = []
-
-		box << 0 if (0 <= r) && (r <= 2)
-		box << 1 if (3 <= r) && (r <= 5)
-		box << 2 if (6 <= r) && (r <= 8)
-		
-		box << 0 if (0 <= c) && (c <= 2)
-		box << 1 if (3 <= c) && (c <= 5)
-		box << 2 if (6 <= c) && (c <= 8)	
-		
-		return boxes.index(box) #=>5
+	def neighbours_indexes_in_box (index)
+		@box = []
+		box2 = @cells.each_slice(9).to_a.each_slice(3).to_a
+		box2 = @box.each{|rows| box2 << rows.transpose}
+		@box = box2.flatten
+		@box = box2.each_slice(9).to_a
+		box_number = index/9
+		box_number = box_number.to_i
+		@box = box[box_number]
+		return neighbours_in_box(@box)
 	end		
 
 

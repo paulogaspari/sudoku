@@ -59,26 +59,36 @@ describe Grid do
 	  	end
 
 
-	    it 'should give box index 4 for index 40' do
-	  		expect(grid.determine_box_index(4,4)).to eq(4)
+
+
+
+	  	it 'should get neighbours_indexes_in_line' do
+	  		expect(grid.neighbours_indexes_in_line(40)).to eq [36, 37, 38, 39, 40, 41, 42, 43, 44] 
 	  	end
 
-	  	it 'should have the same value for new as old' do
-	  		expect(grid.old_neighbours_in_line(40,4)).to eq grid.neighbours_in_line(4,40)
+	  	it 'should get neighbours_indexes_in_column' do
+	  		expect(grid.neighbours_indexes_in_column(40)).to eq [4, 13, 22, 31, 40, 49, 58, 67, 76] 
 	  	end
 
-	  	it 'should get neighbours_in_line' do
-	  		expect(grid.neighbours_in_line(4,40)).to eq [36, 37, 38, 39, 40, 41, 42, 43, 44] 
+	  	it 'should get neighbours_indexes_in_box' do
+	  		grid.puzzle_to_cells
+	  		grid.neighbours_indexes_in_box(40)
+	  		expect(grid.neighbours_in_box).to eq [30, 31, 32, 39, 40, 41, 58, 49, 51] 
 	  	end
+
+
+
+
 
 	  	it 'puts the solution onto the screen' do
 	  		expect(grid.print_puzzle(grid.cheat_sollution)).to be_true
 	  	end
-	 #  	expect(subject).to receive(:some_method).with do |arg|
-	 #    arg == 1
-  # 		end
+	 	
+	 	# expect(subject).to receive(:some_method).with do |arg|
+	 	# arg == 1
+  		# end
 
-  # 		subject.some_method(1)
+  		# subject.some_method(1)
 		# end
 	end
 
