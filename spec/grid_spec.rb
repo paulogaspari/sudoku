@@ -36,19 +36,18 @@ describe Grid do
 	context ':::::::::: SOLVING ::::::::::::::' do
 
 
-		xit 'should call method to figure out cell value if first cell value is 0' do
-			grid.execute_solving
-			# expect(grid.cells.first.value).to eq 0
-			expect(grid.execute_solving).to receive(6).with(0)
+		it 'has the figure out method working'  do
+			grid.figure_out_cell_value(40)
+			expect(grid.number_to_cell(40)).to receive(40)
 			# expect to execute figure_out_cell_value with index 0
 		end
 
 
-	  	xit 'should update the value 0 of the first cell to 6' do
-			grid.execute_solving
-	  		expect(grid.cells.first.value).to eq(6)
-	  		expect(grid.print_puzzle(grid.object_values_to_array)).to be_true
-	  	end
+	  # 	xit 'should update the value 0 of the first cell to 6' do
+			# grid.execute_solving
+	  # 		expect(grid.cells.first.value).to eq(6)
+	  # 		expect(grid.print_puzzle(grid.object_values_to_array)).to be_true
+	  # 	end
 
 
 
@@ -67,7 +66,7 @@ describe Grid do
 
 
 	  	it 'puts the result of the program onto the screen' do
-	  		expect(grid.print_puzzle(program_solution)).to be_true
+	  		expect(grid.print_puzzle(grid.program_solution)).to be_true
 	  	end
 
 	  	it 'puts the solution onto the screen' do

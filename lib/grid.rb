@@ -3,7 +3,7 @@ require_relative 'cell'
 class Grid
 
 
-	attr_accessor :cells, :sudoku, :puzzle
+	attr_accessor :cells, :sudoku
 
 	def initialize(puzzle)
 		@cells = puzzle_to_cells(puzzle)
@@ -26,17 +26,23 @@ class Grid
 
 
 	def figure_out_cell_value(index)
-		line_neighbours
-		column_neighbours
-		box_neighbours
+		line_neighbours(index)
+		column_neighbours(index)
+		box_neighbours(index)
 		number_to_cell(index)
 	end
 
 
 
 	def number_to_cell(index)
+		if missing_number.count == 1
+			puts ":::::::::::::::::::HAPPENING:::::::::::::::"
+			(@cells[index].value = missing_number.first)
+		end
+	end
+
+	def missing_number
 		missing_number = Array(0..9) - @line - @column - @box
-		(@cells[index].value = missing_number.first) if missing_number.count == 1
 	end
 
 
@@ -116,7 +122,7 @@ class Grid
 	# 		@sollution_array << cell.value
 	# 	end
 	# 	return @sollution_array
-	end
+	# end
 
 	
 
