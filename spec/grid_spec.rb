@@ -2,13 +2,12 @@ require_relative '../lib/grid'
 
 describe Grid do
 
-    # let(:puzzle) { '015003002000100906270068430490002017501040380003905000900081040860070025037204600'}
     let(:puzzle) { '015003002000100906270068430490002017501040380003905000900081040860070025037204600'}
+    let(:puzzle_solution) { '615493872348127956279568431496832517521746389783915264952681743864379125137254698'}
     let(:grid) { Grid.new(puzzle) }
 	    
 
 	context "::::::::::::::::SETTING UP::::::::::::::::::" do
-
 
 
 	  	it 'should have 81 elements in the array cells' do
@@ -23,24 +22,12 @@ describe Grid do
 	  		expect(grid.cells.any?{|e| e.value.nil? }).to be_false
 	  	end
 
-	  
-	  	it'should print puzzle to solve' do
-	  		expect(grid.print_puzzle(grid.sudoku)).to be_true
-	  	end
 	end
-
-
 
 
 
 	context ':::::::::: SOLVING ::::::::::::::' do
 
-
-		xit ' has the solve method working' do
-			
-			expect(grid.solve).to
-			gird.solve
-		end
 
 		it 'has the figure out method working'  do
 			expect(grid).to receive(:line_neighbours).with(40)
@@ -51,21 +38,15 @@ describe Grid do
 		end
 
 
-	  # 	xit 'should update the value 0 of the first cell to 6' do
-			# grid.execute_solving
-	  # 		expect(grid.cells.first.value).to eq(6)
-	  # 		expect(grid.print_puzzle(grid.object_values_to_array)).to be_true
-	  # 	end
-
-
-
 	  	it 'should get line_neighbours' do
 	  		expect(grid.line_neighbours(3)).to eq [0, 1, 5, 0, 0, 3, 0, 0, 2] 
 	  	end
 
+
 	  	it 'should get column_neighbours' do
 	  		expect(grid.column_neighbours(3)).to eq [0, 1, 0, 0, 0, 9, 0, 0, 2] 
 	  	end
+
 
 	  	it 'should get box_neighbours' do
 	  		expect(grid.box_neighbours(3)).to eq [0, 1, 0, 0, 0, 6, 3, 0, 8]
@@ -79,23 +60,28 @@ describe Grid do
 	  		expect(grid.missing_number).to eq [6]
 	  	end
 
-	  	it 'puts THE PROCESSED SOLLUTION' do
+	end
+
+	context ':::::::::: PRINTING ::::::::::::::' do
+
+
+	  	it'puts the puzzle to solve' do
+	  		expect(grid.print_puzzle(puzzle.each_char.to_a.map {|cell| cell.to_i})).to be_true
+	  	end
+
+
+	  	it 'PUTS THE PROCESSED SOLLUTION' do
 	  		grid.solve
 	  		expect(grid.print_puzzle(grid.program_solution)).to be_true
 	  	end
 
 
-
-
-	  	it 'puts the solution onto the screen' do
-	  		expect(grid.print_puzzle(grid.cheat_sollution)).to be_true
+	  	it 'puts the puzzle solution' do
+	  		expect(grid.print_puzzle(puzzle_solution.each_char.to_a.map {|cell| cell.to_i})).to be_true
 	  	end
 	 	
 
 	end
-
-
-
 
 end
 

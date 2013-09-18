@@ -92,13 +92,6 @@ class Grid
 		@cells.map {|cells| cells.value}
 	end
 
-	def sudoku_board
-		sudoku_b = @cells.map {|value| cell.value}
-	end
-
-	def cheat_sollution
-		'615493872348127956279568431496832517521746389783915264952681743864379125137254698'.each_char.to_a.map {|cell| cell.to_i}
-	end
 
 	def print_puzzle(array)
 		sudoku_divided = array.each_slice(9).to_a
@@ -108,16 +101,6 @@ class Grid
 			puts '|' + "\n ---+---+---+---+---+---+---+---+---"
 		end
 	end
-
-
-	# def object_values_to_array
-	# 	@sollution_array = []
-	# 	@cells.each do |cell|
-	# 		@sollution_array << cell.value
-	# 	end
-	# 	return @sollution_array
-	# end
-
 	
 
 
