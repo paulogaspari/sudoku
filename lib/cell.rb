@@ -1,10 +1,12 @@
 class Cell
 
-	attr_accessor :value
+	attr_accessor :value, :box_neighbours
 
 	def initialize(value)
-	    # raise 'Single digit expected' unless value.length == 1
 		@value = value
+		@box_neighbours = []
+		@line_neighbours = []
+		@column_neighbours = []
 	end
 
 
